@@ -1,0 +1,32 @@
+
+services:
+  db-portafolio:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: portafolio
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+    ports:
+      - "8020:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - portafolio-network
+
+  phpmyadmin-portafolio:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: db-portafolio
+      PMA_USER: user
+      PMA_PASSWORD: user
+    ports:
+      - "8080:80"
+    depends_on:
+      - db-portafolio
+    networks:
+      - portafolio-network
+volumes:
+  db_data:
+networks:
+  portafolio-network:
